@@ -35,21 +35,21 @@ export default function SignUpPage() {
             <Controller name="name" control={form.control} render={({ field, fieldState }) =>
               <Field>
                 <FieldLabel>FullName</FieldLabel>
-                <Input placeholder="Tonny Stark" {...field}></Input>
+                <Input aria-invalid={fieldState.invalid} placeholder="Tonny Stark" {...field}></Input>
                 {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
               </Field>
             } />
             <Controller name="email" control={form.control} render={({ field, fieldState }) =>
               <Field>
                 <FieldLabel>Email</FieldLabel>
-                <Input placeholder="tonny@stark.com" {...field} type="email"></Input>
+                <Input aria-invalid={fieldState.invalid} placeholder="tonny@stark.com" {...field} type="email"></Input>
                 {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
               </Field>
             } />
             <Controller name="password" control={form.control} render={({ field, fieldState }) =>
               <Field>
                 <FieldLabel>Password</FieldLabel>
-                <Input placeholder="********" {...field} type="password"></Input>
+                <Input aria-invalid={fieldState.invalid} placeholder="********" {...field} type="password"></Input>
                 {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
               </Field>
             } />
