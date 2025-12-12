@@ -1,14 +1,16 @@
-
 "use client"
 import Link from "next/link";
 import { Button, buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { useConvexAuth } from "convex/react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 export function Navbar() {
   const { isAuthenticated, isLoading } = useConvexAuth()
+  const router = useRouter()
 
   return (
     <nav className="w-full py-5 flex items-center justify-between">
@@ -26,10 +28,19 @@ export function Navbar() {
         {isLoading ? null : isAuthenticated ? (
           <Button className={buttonVariants({ variant: "destructive" })} onClick={() =>
             authClient.signOut({
+              fetchOptions: {
+                onSuccess: () => {
+                  toast.success("You have been signed out");
+                  router.push("/");
+                },
+                onError: (error) => {
+                  toast.error(error.error.message);
+                }
+              }
             })} >Logout</Button>
         ) : (
           <>
-            <Link className={buttonVariants({ variant: "outline" })} href="/auth/sign-in">Login</Link>
+            <Link className={buttonVariants({ variant: "outline" })} href="/auth/login">Login</Link>
             <Link className={buttonVariants({ variant: "outline" })} href="/auth/sign-up">Sign up</Link>
           </>
         )}
