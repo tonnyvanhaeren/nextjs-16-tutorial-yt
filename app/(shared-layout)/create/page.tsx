@@ -13,7 +13,6 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createBlogAction } from "@/app/actions";
 
@@ -28,6 +27,7 @@ export default function CreatePage() {
     defaultValues: {
       title: "",
       content: "",
+      image: undefined,
     }
   })
 
@@ -62,6 +62,18 @@ export default function CreatePage() {
                 <Field>
                   <FieldLabel>Content</FieldLabel>
                   <Textarea aria-invalid={fieldState.invalid} placeholder="Content" {...field} />
+                  {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
+                </Field>
+              } />
+
+              <Controller name="image" control={form.control} render={({ field, fieldState }) =>
+                <Field>
+                  <FieldLabel>Image</FieldLabel>
+                  <Input type="file" aria-invalid={fieldState.invalid} accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      field.onChange(file)
+                    }} />
                   {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
                 </Field>
               } />

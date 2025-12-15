@@ -26,7 +26,7 @@ export default function BlogPage() {
 }
 
 async function LoadBlogList() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   const data = await fetchQuery(api.posts.getPosts);
 
   return (
@@ -34,7 +34,7 @@ async function LoadBlogList() {
       {data?.map((post) => (
         <Card className="pt-0" key={post._id}>
           <div className="relative h-48 w-full overflow-hidden rounded-t-lg ">
-            <Image src="https://images.unsplash.com/photo-1692087460128-da4bc008931c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="foto" fill className="object-cover" />
+            <Image src={post.imageUrl ?? 'https://images.unsplash.com/photo-1692087460128-da4bc008931c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'} alt="foto" fill className="object-cover" />
           </div>
           <CardContent>
             <Link href={`/blog/${post._id}`}>

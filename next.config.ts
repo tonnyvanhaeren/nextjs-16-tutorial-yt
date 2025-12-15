@@ -7,7 +7,13 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
+        port: "",
       },
+      {
+        hostname: "robust-canary-13.convex.cloud",
+        protocol: "https",
+        port: "",
+      }
     ],
   },
 };
