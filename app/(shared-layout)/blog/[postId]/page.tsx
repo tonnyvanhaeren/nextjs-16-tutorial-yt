@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator";
+import { CommentSection } from "@/components/web/CommentSection";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
@@ -49,7 +50,7 @@ export default async function PostIdPage({ params }: PostIdRouteProps) {
 
       <Separator className="my-8" />
       {/* comment section */}
-
+      <CommentSection />
 
     </div>
 
