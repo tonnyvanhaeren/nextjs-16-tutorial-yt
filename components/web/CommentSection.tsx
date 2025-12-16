@@ -10,15 +10,19 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import z from "zod";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 
 export function CommentSection() {
   const [isPending, startTransition] = useTransition();
   const params = useParams<{ postId: Id<'posts'> }>()
+
+  const comments = useQuery(api.comments.getCommentsByPostId, { postId: params.postId })
 
   const createComment = useMutation(api.comments.createComment);
 
@@ -42,13 +46,17 @@ export function CommentSection() {
     })
   }
 
+  if (comments === undefined) {
+    return <p>loading ...</p>
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 border-b">
         <MessageSquare className="size-5" />
-        <h2 className="text-lg font-semibold">5 Comments</h2>
+        <h2 className="text-lg font-semibold">{comments.length} Comments</h2>
       </CardHeader>
-      <CardContent >
+      <CardContent className="space-y-8">
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
 
           <Controller name="body" control={form.control} render={({ field, fieldState }) =>
@@ -71,6 +79,28 @@ export function CommentSection() {
           }</Button>
         </form>
 
+        {comments?.length > 0 && <Separator className="my-8" />}
+
+        <section className="space-y-6">
+          {comments?.map((comment) => (
+            <div key={comment._id} className="flex gap-4">
+              <Avatar className="size-10 shrink-0">
+                <AvatarImage
+                  src={`https://avatar.vercel.sh/${comment.authorName}`}
+                  alt={comment.authorName} />
+                <AvatarFallback>{comment.authorName.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-xs">{comment.authorName}</p>
+                  <p className="text-xs text-muted-foreground">{new Date(comment._creationTime).toLocaleDateString("nl-BE")}</p>
+                </div>
+                <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed  ">{comment.body}</p>
+              </div>
+            </div>
+          ))}
+
+        </section>
       </CardContent>
     </Card>
   )
