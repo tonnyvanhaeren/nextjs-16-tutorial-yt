@@ -11,6 +11,7 @@ import Link from "next/link"
 import { Metadata, ResolvingMetadata } from "next"
 import { PostPresence } from "@/components/web/PostPresence";
 import { getToken } from "@/lib/auth-server";
+import { redirect } from "next/navigation";
 
 interface PostIdRouteProps {
   params: Promise<{ postId: Id<'posts'> }>;
@@ -44,6 +45,10 @@ export default async function PostIdPage({ params }: PostIdRouteProps) {
     await preloadQuery(api.comments.getCommentsByPostId, { postId: postId }),
     await fetchQuery(api.presence.getUserId, {}, { token })
   ])
+
+  if (!userId) {
+    return redirect('/auth/login')
+  }
 
   if (!post) {
     return <div className="text-6xl font-extrabold text-red-400 py-20">Post not found</div>
