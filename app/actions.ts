@@ -6,7 +6,7 @@ import { fetchMutation } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth-server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 // only mutation only post action to the server
 export async function createBlogAction(values: z.infer<typeof postSchema>) {
@@ -51,6 +51,7 @@ export async function createBlogAction(values: z.infer<typeof postSchema>) {
     }
   }
 
-  revalidatePath("/blog")
+  updateTag("blog")
+  // revalidatePath("/blog")
   return redirect("/blog")
 }

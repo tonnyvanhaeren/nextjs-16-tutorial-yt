@@ -3,12 +3,11 @@ import { Separator } from "@/components/ui/separator";
 import { CommentSection } from "@/components/web/CommentSection";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeftIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Metadata, ResolvingMetadata } from "next"
+import { Metadata } from "next"
 import { PostPresence } from "@/components/web/PostPresence";
 import { getToken } from "@/lib/auth-server";
 import { redirect } from "next/navigation";
